@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Keyless Bridge: OIDC tokens instead of static API keys</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#111;background:#fafafa;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto;padding:48px 24px}
+.tag{display:inline-block;background:#111;color:#fff;font-size:13px;padding:4px 10px;border-radius:99px}
+h1{font-size:42px;line-height:1.15;margin:18px 0 12px}h2{font-size:22px;margin:36px 0 10px}
+.sub{font-size:19px;color:#333}.card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px 22px;margin:14px 0}
+ul{padding-left:20px}code{background:#f0f0f0;padding:1px 5px;border-radius:4px}
+form{background:#fff;border:2px solid #111;border-radius:12px;padding:22px;margin-top:28px}
+label{display:block;font-weight:600;margin:12px 0 6px}input,select{width:100%;padding:11px;font-size:16px;border:1px solid #bbb;border-radius:8px}
+button{margin-top:16px;width:100%;padding:13px;font-size:17px;font-weight:600;background:#111;color:#fff;border:0;border-radius:8px}
+.note{font-size:13px;color:#666}.src a{color:#333}
+@media(max-width:600px){h1{font-size:30px}.wrap{padding:28px 18px}}
+</style></head><body><div class="wrap">
+<div style="font-weight:800;font-size:20px;margin-bottom:14px">Keyless Bridge</div><span class="tag">For API vendors on the Vercel Marketplace</span>
+<h1>Vercel's Nov 30, 2026 deadline: accept OIDC tokens instead of static API keys, without building a token server.</h1>
+<p class="sub">Vercel says that by November 30, 2026, Marketplace vendors that still rely on long-lived secrets get a "Not secure" label, and by January 2027 vendors without secure auth are removed. We're building a small bridge so your existing API can accept short-lived tokens in days, not a quarter.</p>
+
+<h2>What it does</h2>
+<div class="card"><ul>
+<li><b>Open-source library</b> you drop into your API: verifies the incoming OIDC token (Vercel, GitHub Actions, GitLab) against a trust policy your customer sets.</li>
+<li><b>Maps it to your existing API-key permissions</b> and returns a short-lived token, so your auth model doesn't change.</li>
+<li><b>Optional hosted bridge</b> for the token exchange, revocation and an audit log, if you don't want to run it yourself.</li>
+<li>A ready "connect without a key" docs page you can adapt for your customers.</li>
+</ul></div>
+
+<h2>Who it's for</h2>
+<div class="card">Small API and SaaS teams that already have their own API-key system, list (or want to list) on the Vercel Marketplace, and don't want to adopt a full identity platform just to meet the deadline.</div>
+
+<h2>Why now</h2>
+<div class="card src">Vercel surveyed more than 1,000 SaaS vendors and found only 8.4% support a secure, short-lived auth method. Vercel's free OIDC UI components give you the forms and token verification; storing policies, issuing your own short-lived token, revocation and audit are still on you.<br>
+<span class="note">Source: <a href="https://vercel.com/blog/death-to-long-lived-static-credentials">Vercel blog, "Death to long-lived static credentials"</a> (Oct 22, 2026).</span></div>
+
+<form id="wl" action="https://formsubmit.co/2394582935f20b443c02dae0125fe735" method="POST">
+<input type="hidden" name="_subject" value="Keyless Bridge waitlist signup"><input type="hidden" name="_captcha" value="false"><input type="hidden" name="_template" value="table"><input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+<b style="font-size:20px">Join the early-access list</b>
+<p class="note">We're in early development. No product is live yet. We'll email you when there's something to try, and may ask for a short call.</p>
+<label for="email">Work email</label><input id="email" name="email" type="email" required placeholder="you@company.com">
+<label for="integrations">How many Vercel Marketplace integrations does your company run today?</label>
+<select id="integrations" name="integrations" required><option value="">Choose one</option><option>0, planning to list</option><option>1</option><option>2–5</option><option>More than 5</option><option>I'm not an API vendor</option></select>
+<button type="submit">Join the waitlist</button>
+<p class="note">Privacy: we use your email only for this project. Unsubscribe any time by replying "unsubscribe".</p>
+<p id="ok" style="display:none;font-weight:600">Thanks, you're on the list.</p>
+</form>
+<p class="note" style="margin-top:28px">Not affiliated with or endorsed by Vercel. Keyless Bridge is a working name.</p>
+</div>
+<script>
+document.getElementById('wl').addEventListener('submit',async e=>{e.preventDefault();const f=e.target;
+try{const r=await fetch(f.action.replace('formsubmit.co/','formsubmit.co/ajax/'),{method:'POST',headers:{Accept:'application/json'},body:new FormData(f)});
+if(!r.ok)throw 0;f.querySelectorAll('input,select,button').forEach(x=>x.disabled=true);document.getElementById('ok').style.display='block'}catch(_){f.submit()}});
+</script></body></html>
